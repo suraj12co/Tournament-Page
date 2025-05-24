@@ -1,31 +1,21 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { supabase } from './supabaseClient';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Landing from './pages/Landing';
-import ResetPassword from './pages/ResetPassword';
-import TournamentRegister from './pages/TournamentRegister';
-import HomePage from './pages/HomePage';
-import AdminLogin from './pages/AdminLogin';
-
+import React from 'react'
+import AppRoutes from './routes/AppRoutes'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
   return (
-    <Router>
-      <Routes>        
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* <Route path="/dropdown" element={<DropdownMenu />} /> */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/tournament-register" element={<TournamentRegister />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-
-      </Routes>
-    </Router>
+    <>
+      <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900 relative">
+        <div className="flex-grow pt-4 pb-20 overflow-y-auto">
+          <AppRoutes basename="/" />
+          <Footer />
+        </div>
+        <div>
+        </div>
+        <Navbar className="fixed bottom-0 left-0 right-0" />
+      </div>
+    </>
   );
 }
 

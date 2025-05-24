@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
-function Register() {
+function TournamentRegister() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,13 +20,12 @@ function Register() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-      <Header />
       <main className="flex-grow py-16">
         <div className="container mx-auto max-w-lg">
           <h2 className="text-4xl font-bold text-center mb-8">Register for E-Sport Tournament</h2>
           <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-lg">
             <div className="mb-6">
-              <label htmlFor="name" className="block text-lg font-medium mb-2">Full Name</label>
+              <label htmlFor="name" className="block text-lg font-medium mb-2">InGame Name</label>
               <input
                 type="text"
                 id="name"
@@ -96,9 +93,8 @@ function Register() {
           </form>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
 
-export default Register;
+export default TournamentRegister;

@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 
 const HomePage = () => {
   const [activeMatchTab, setActiveMatchTab] = useState('Ongoing');
   const [activeGameTab, setActiveGameTab] = useState('Tournament');
-
   const matchTabs = ['Ongoing', 'Upcoming', 'Completed'];
-  const gameTabs = ['Tournament', 'Solo'];
-  const games = [
-    { name: 'FF MAX BR', image: 'https://via.placeholder.com/150' },
-    { name: 'Clash Squad CS 1V1', image: 'https://via.placeholder.com/150' },
-    { name: 'Clash Squad CS 2V2', image: 'https://via.placeholder.com/150' },
-    { name: 'Survival', image: 'https://via.placeholder.com/150' },
-    { name: 'Lone Wolf LW 1V1', image: 'https://via.placeholder.com/150' },
-    { name: 'Lone Wolf LW 2V2', image: 'https://via.placeholder.com/150' },
+  const gameTabs = ['Team', 'Solo'];
+
+  const teamGames = [
+    { name: 'FF MAX BR', image: 'https://news.seagm.com/wp-content/uploads/2021/04/free-fire-clash-squad-season-6-feat2x.jpg' },
+    { name: 'Clash Squad CS 4V4', image: 'https://staticg.sportskeeda.com/editor/2022/01/e65fd-16426564526595-1920.jpg' },
+    { name: 'Clash Squad CS 2V2', image: 'https://i.ytimg.com/vi/XBdoVebYXXk/maxresdefault.jpg' },
+    { name: 'Lone Wolf LW 2V2', image: 'https://i.ytimg.com/vi/XBdoVebYXXk/maxresdefault.jpg' },
+  ];
+
+  const soloGames = [
+    { name: 'Survival', image: 'https://news.seagm.com/wp-content/uploads/2021/04/free-fire-clash-squad-season-6-feat2x.jpg' },
+    { name: 'Lone Wolf LW 1V1', image: 'https://th.bing.com/th/id/OIP.3NNc_cX3J9l1RH19OtC-xwHaEK?rs=1&pid=ImgDetMain' },
   ];
 
   return (
@@ -39,7 +43,7 @@ const HomePage = () => {
         {/* Banner */}
         <div className="relative bg-[rgba(44,54,57,0.8)] rounded-2xl shadow-2xl border border-[rgba(255,255,255,0.1)] backdrop-blur-lg overflow-hidden">
           <img
-            src="https://via.placeholder.com/400x150"
+            src="https://logospng.org/download/whatsapp/logo-whatsapp-verde-icone-ios-android-4096.png"
             alt="Banner"
             className="w-full h-32 object-cover opacity-70"
           />
@@ -62,11 +66,10 @@ const HomePage = () => {
               <button
                 key={tab}
                 onClick={() => setActiveMatchTab(tab)}
-                className={`flex-1 py-3 rounded-lg text-sm font-medium transition-all ${
-                  activeMatchTab === tab
-                    ? 'bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white'
-                    : 'bg-[rgba(255,255,255,0.05)] text-[#D3D3D3]'
-                }`}
+                className={`flex-1 py-3 rounded-lg text-sm font-medium transition-all ${activeMatchTab === tab
+                  ? 'bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white'
+                  : 'bg-[rgba(255,255,255,0.05)] text-[#D3D3D3]'
+                  }`}
               >
                 {tab}
               </button>
@@ -85,18 +88,18 @@ const HomePage = () => {
               <button
                 key={tab}
                 onClick={() => setActiveGameTab(tab)}
-                className={`flex-1 py-3 rounded-lg text-sm font-medium transition-all ${
-                  activeGameTab === tab
-                    ? 'bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white'
-                    : 'bg-[rgba(255,255,255,0.05)] text-[#D3D3D3]'
-                }`}
+                className={`flex-1 py-3 rounded-lg text-sm font-medium transition-all ${activeGameTab === tab
+                  ? 'bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white'
+                  : 'bg-[rgba(255,255,255,0.05)] text-[#D3D3D3]'
+                  }`}
               >
                 {tab}
               </button>
             ))}
           </div>
+
           <div className="grid grid-cols-2 gap-4">
-            {games.map((game) => (
+            {(activeGameTab === 'Solo' ? soloGames : teamGames).map((game) => (
               <div
                 key={game.name}
                 className="bg-[rgba(255,255,255,0.05)] rounded-lg overflow-hidden shadow-md"
@@ -112,22 +115,6 @@ const HomePage = () => {
           </div>
         </section>
       </main>
-
-      {/* Bottom Navigation */}
-      <nav className="bg-[rgba(44,54,57,0.9)] p-4 flex justify-around items-center border-t border-[rgba(255,255,255,0.1)] backdrop-blur-lg">
-        <button className="flex flex-col items-center text-[#D3D3D3] hover:text-[#00C4B4] transition-colors">
-          <span className="text-xl">💰</span>
-          <span className="text-xs">Earn</span>
-        </button>
-        <button className="flex flex-col items-center text-[#00C4B4]">
-          <span className="text-xl">🎮</span>
-          <span className="text-xs">Play</span>
-        </button>
-        <button className="flex flex-col items-center text-[#D3D3D3] hover:text-[#00C4B4] transition-colors">
-          <span className="text-xl">👤</span>
-          <span className="text-xs">Account</span>
-        </button>
-      </nav>
     </div>
   );
 };

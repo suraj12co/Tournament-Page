@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  {React, useState } from 'react';
+import { useNavigate,Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 const Login = () => {
@@ -99,6 +99,10 @@ const Login = () => {
           >
             <span className="text-base">🔑</span> Forgot Password?
           </a>
+          <p className="mt-4 text-sm text-center text-[#D3D3D3]">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-green-400 hover:underline">Register</Link>
+          </p>
         </div>
       </div>
     </div>

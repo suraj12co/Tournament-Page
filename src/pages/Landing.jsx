@@ -17,14 +17,14 @@ const Landing = () => {
         <p className="text-lg md:text-2xl mb-10 max-w-2xl mx-auto opacity-90 animate-fade-in-up">
           Join the ultimate battle of champions, compete with the best, and rise to legendary glory!
         </p>
-        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 animate-fade-in-up">
+        <div className="flex-col sm:flex-row space-y-4 sm:space-y-2 sm:space-x-6 animate-fade-in-up">
           <Link to="/login">
-            <button className="px-8 py-3 bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white rounded-lg text-lg font-semibold cursor-pointer hover:scale-105 hover:shadow-[0_0_12px_rgba(0,196,180,0.5)] transition-all duration-200">
+            <button className="px-8 py-3 mx-1 bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white rounded-lg text-lg font-semibold cursor-pointer hover:scale-105 hover:shadow-[0_0_12px_rgba(0,196,180,0.5)] transition-all duration-200">
               Login
             </button>
           </Link>
           <Link to="/register">
-            <button className="px-8 py-3 bg-gradient-to-r from-[#FF9500] to-[#AF52DE] text-white rounded-lg text-lg font-semibold cursor-pointer hover:scale-105 hover:shadow-[0_0_12px_rgba(255,149,0,0.5)] transition-all duration-200">
+            <button className="px-8 py-3 mx-1 bg-gradient-to-r from-[#FF9500] to-[#AF52DE] text-white rounded-lg text-lg font-semibold cursor-pointer hover:scale-105 hover:shadow-[0_0_12px_rgba(255,149,0,0.5)] transition-all duration-200">
               Register
             </button>
           </Link>
@@ -37,23 +37,6 @@ const Landing = () => {
           and start your journey!
         </p>
       </div>
-      <style jsx>{`
-        @keyframes fadeInDown {
-          0% { opacity: 0; transform: translateY(-20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-down {
-          animation: fadeInDown 0.8s ease-out;
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out 0.2s;
-          animation-fill-mode: both;
-        }
-      `}</style>
     </div>
   );
 };
