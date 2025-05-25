@@ -73,7 +73,7 @@ const HomePage = () => {
           <div className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
             <img
               src={userPhoto || "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"}
-              alt="Profile"
+              alt="Profile" className='w-full h-full rounded-full object-cover'
             />
           </div>
           <div>

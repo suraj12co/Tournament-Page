@@ -9,7 +9,7 @@ const Landing = () => {
         <div className="absolute w-96 h-96 bg-[#34C759]/10 rounded-full blur-3xl animate-pulse bottom-10 right-10"></div>
       </div>
       <div className="relative z-10 text-center px-4">
-        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight animate-fade-in-down">
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-6 tracking-tight animate-fade-in-down">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00C4B4] to-[#34C759]">
             🔥 E-Sports Tournament Organisation 🔥
           </span>
