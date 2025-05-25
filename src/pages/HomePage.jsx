@@ -52,7 +52,7 @@ const HomePage = () => {
               <p className="text-sm font-medium">1. JOIN OUR WHATSAPP CHANNEL</p>
               <p className="text-xs opacity-70">2. GIVEAWAYS & MORE UPDATES!</p>
             </div>
-            <button className="bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white rounded-lg px-4 py-2 text-sm font-semibold hover:scale-105 hover:shadow-[0_0_12px_rgba(0,196,180,0.5)] transition-all">
+            <button onClick={() => window.open('https://chat.whatsapp.com/GLVRCjJj2IV0kCw6vI1ZtM')} className="bg-gradient-to-r from-[#00C4B4] to-[#34C759] text-white rounded-lg px-4 py-2 text-sm font-semibold hover:scale-105 hover:shadow-[0_0_12px_rgba(0,196,180,0.5)] transition-all">
               Join Now
             </button>
           </div>
