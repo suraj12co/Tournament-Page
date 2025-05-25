@@ -1,5 +1,5 @@
-import  {React, useState } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
+import { React, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 const Login = () => {
@@ -22,6 +22,7 @@ const Login = () => {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       if (data.session) {
+        localStorage.setItem("supabase_token", data.session.access_token);
         navigate('/home');
       } else {
         setError('Login failed. Please check your credentials.');
@@ -32,7 +33,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
   const handleForgotPassword = async () => {
     if (!email) {
       setError('Please enter your email to reset your password.');

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
-const Tournaments = () => {
+const Test = () => {
     const [tournaments, setTournaments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedTournament, setSelectedTournament] = useState(null);
@@ -177,4 +177,4 @@ const Tournaments = () => {
     );
 };
 
-export default Tournaments;
+export default Test;

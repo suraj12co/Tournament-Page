@@ -9,6 +9,7 @@ import HomePage from '../pages/HomePage';
 import AdminLogin from '../pages/AdminLogin';
 import Profile from '../pages/Profile';
 import Tournaments from '../pages/Tournaments';
+import Test from '../components/Test';
 const AppRoutes = () => {
   return (
     <Routes>
@@ -22,6 +23,7 @@ const AppRoutes = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<Landing />} />
       <Route path="/tournaments" element={<Tournaments />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   )
 }

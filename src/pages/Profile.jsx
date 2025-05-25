@@ -8,78 +8,50 @@ const Profile = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
+    const [userPhoto, setUserPhoto] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const getUser = async () => {
-            const { data, error } = await supabase.auth.getUser();
-            if (error || !data?.user) {
+            const { data, error } = await supabase.auth.getSession();
+            if (error || !data?.session) {
                 navigate('/login');
-            } else {
-                setUser(data.user);
-                setDisplayName(data.user.user_metadata?.display_name || '');
-                setProfilePicture(data.user.user_metadata?.profile_picture || null);
             }
+            const { data: userData, error: userError } = await supabase
+                .from("users")
+                .select("*")
+                .eq("id", data.session.user.id)
+                .single();
+
+            if (userError) return navigate("/signin", { replace: true });
             setLoading(false);
+            setUser(userData);
+            setDisplayName(userData.name || '');
+            setProfilePicture(userData.profile_pictures || "https://th.bing.com/th/id/OIP.QjynegEfQVPq5kIEuX9fWQHaFj?rs=1&pid=ImgDetMain");
         };
         getUser();
-        // const fetchProfile = async () => {
-        //     const { data: sessionData, error: sessionError } = await supabase.auth.getUser();
-        //     if (sessionError || !sessionData.user) return navigate("/login", { replace: true });
-
-        //     const { data: userData, error: userError } = await supabase
-        //         .from("users")
-        //         .select("id, name, email, profile_picture, role")
-        //         .eq("id", sessionData.user.id)
-        //         .single();
-
-        //     if (userError) return navigate("/login", { replace: true });
-
-        //     setUser(userData);
-        //     setUserPhoto(userData.profile_picture || "https://via.placeholder.com/150");
-        //     setDisplayName(userData.name || '');
-        //     setLoading(false);
-        // };
-
-        // fetchProfile();
     }, [navigate]);
+    const handlePhotoChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file || !user) return;
+        const filePath = `user_${user.id}/profile_pictures/${file.name}_${Date.now()}`;
+        if (user.profile_picture) {
+            const oldFilePath = user.profile_picture.split("/").slice(-2).join("/");
+            await supabase.storage.from("profile-pictures").remove([oldFilePath]);
+            console.log("Old profile picture removed:", oldFilePath);
+        }
+        await supabase.storage.from("profile-pictures").upload(filePath, file, { cacheControl: "3600", upsert: true });
+        const { data: publicUrlData } = supabase.storage.from("profile-pictures").getPublicUrl(filePath);
+        const imageUrl = publicUrlData.publicUrl;
+        await supabase.from("users").update({ profile_pictures: imageUrl }).eq("id", user.id);
+        setUserPhoto(imageUrl);
+        setUser({ ...user, profile_picture: imageUrl });
+        alert("Profile picture updated successfully!");
+    };
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
         navigate('/login');
-    };
-
-    const handleProfilePictureChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        setUpdating(true);
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${user.id}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage
-            .from('profile-pictures')
-            .upload(fileName, file, { upsert: true });
-
-        if (uploadError) {
-            console.error('Upload error:', uploadError);
-            setUpdating(false);
-            return;
-        }
-
-        const { data: urlData } = supabase.storage
-            .from('profile-pictures')
-            .getPublicUrl(fileName);
-
-        const { error: updateError } = await supabase.auth.updateUser({
-            data: { profile_picture: urlData.publicUrl, display_name: displayName },
-        });
-
-        if (updateError) {
-            console.error('Update error:', updateError);
-        } else {
-            setProfilePicture(urlData.publicUrl);
-        }
-        setUpdating(false);
     };
 
     const handleDisplayNameChange = async (e) => {
@@ -126,7 +98,7 @@ const Profile = () => {
                                 type="file"
                                 accept="image/*"
                                 className="hidden"
-                                onChange={handleProfilePictureChange}
+                                onChange={handlePhotoChange}
                                 disabled={updating}
                             />
                             <svg

@@ -3,22 +3,38 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
 const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const trimmedName = name.trim();
+  const trimmedEmail = email.trim();
+  const trimmedPhone = phone.trim();
+
   const handleRegister = async () => {
-    if (!email || !password) {
+    if (!name || !email || !phone || !password || !confirmPassword) {
       setError('Please fill in all fields.');
-      return;
-    }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Please enter a valid email address.');
+      return;
+    }
+    if (!/^\d{10}$/.test(phone)) {
+      setError('Please enter a valid 10-digit phone number.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
 
@@ -26,9 +42,23 @@ const Register = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name: trimmedName, phone: trimmedPhone },
+          emailRedirectTo: `${window.location.origin}/home`
+        }
+      });
+
       if (error) throw error;
+
       if (data.user) {
+        const { error: dbError } = await supabase.from("users").insert([
+          { id: data.user.id, name, email, phone }
+        ]);
+        if (dbError) throw dbError;
+
         toast.success('Check your email to confirm your account.');
         navigate('/login');
       }
@@ -37,21 +67,7 @@ const Register = () => {
     } finally {
       setLoading(false);
     }
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/home`,
-      }
-    });
-    if (error) {
-      setError(error.message);
-    } else {
-      toast.success('Check your email to confirm your account.');
-      navigate('/login');
-    }
   };
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#1C2526] font-sans">
@@ -63,10 +79,20 @@ const Register = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleLogin();
+            handleRegister();
           }}
         >
-
+          <div className="mb-5">
+            <label className="block mb-2 text-[#D3D3D3] font-medium text-lg">Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full p-3 border border-[rgba(255,255,255,0.2)] rounded-lg bg-[rgba(255,255,255,0.05)] text-white text-base focus:outline-none focus:border-[#00C4B4] focus:ring-2 focus:ring-[#00C4B4] transition duration-300 disabled:opacity-50"
+            />
+          </div>
           <div className="mb-5">
             <label className="block mb-2 text-[#D3D3D3] font-medium text-lg">Email:</label>
             <input
@@ -79,11 +105,33 @@ const Register = () => {
             />
           </div>
           <div className="mb-5">
+            <label className="block mb-2 text-[#D3D3D3] font-medium text-lg">Phone:</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full p-3 border border-[rgba(255,255,255,0.2)] rounded-lg bg-[rgba(255,255,255,0.05)] text-white text-base focus:outline-none focus:border-[#00C4B4] focus:ring-2 focus:ring-[#00C4B4] transition duration-300 disabled:opacity-50"
+            />
+          </div>
+          <div className="mb-5">
             <label className="block mb-2 text-[#D3D3D3] font-medium text-lg">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              className="w-full p-3 border border-[rgba(255,255,255,0.2)] rounded-lg bg-[rgba(255,255,255,0.05)] text-white text-base focus:outline-none focus:border-[#00C4B4] focus:ring-2 focus:ring-[#00C4B4] transition duration-300 disabled:opacity-50"
+            />
+          </div>
+          <div className="mb-5">
+            <label className="block mb-2 text-[#D3D3D3] font-medium text-lg">Confirm Password:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required
               disabled={loading}
               className="w-full p-3 border border-[rgba(255,255,255,0.2)] rounded-lg bg-[rgba(255,255,255,0.05)] text-white text-base focus:outline-none focus:border-[#00C4B4] focus:ring-2 focus:ring-[#00C4B4] transition duration-300 disabled:opacity-50"
