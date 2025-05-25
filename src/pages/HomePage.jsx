@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   const [activeMatchTab, setActiveMatchTab] = useState('Ongoing');
   const [activeGameTab, setActiveGameTab] = useState('Tournament');
   const matchTabs = ['Ongoing', 'Upcoming', 'Completed'];
   const gameTabs = ['Team', 'Solo'];
+  const [balance, setBalance] = useState(0.0);
+  const [userPhoto, setUserPhoto] = useState("");
+  const [displayName, setDisplayName] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const teamGames = [
     { name: 'FF MAX BR', image: 'https://news.seagm.com/wp-content/uploads/2021/04/free-fire-clash-squad-season-6-feat2x.jpg' },
@@ -18,6 +24,46 @@ const HomePage = () => {
     { name: 'Survival', image: 'https://news.seagm.com/wp-content/uploads/2021/04/free-fire-clash-squad-season-6-feat2x.jpg' },
     { name: 'Lone Wolf LW 1V1', image: 'https://th.bing.com/th/id/OIP.3NNc_cX3J9l1RH19OtC-xwHaEK?rs=1&pid=ImgDetMain' },
   ];
+  useEffect(() => {
+  const getUser = async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data?.session?.user?.id) {
+      console.log("No valid user session found.");
+      navigate('/login');
+      return;
+    }
+
+    const userId = data.session.user.id;
+    console.log("Session user ID:", userId);
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (userError || !userData) {
+      console.log("userError", userError);
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    console.log("User Data:", userData);
+
+    setDisplayName(userData.name || '');
+    setUserPhoto(
+      userData.profile_pictures?.trim()
+        ? userData.profile_pictures
+        : "https://th.bing.com/th/id/OIP.QjynegEfQVPq5kIEuX9fWQHaFj?rs=1&pid=ImgDetMain"
+    );
+    setBalance(userData.balance ?? 0.0);
+    setLoading(false);
+  };
+
+  getUser();
+}, [navigate]);
+
 
   return (
     <div className="min-h-screen bg-[#1C2526] text-white font-sans flex flex-col">
@@ -25,16 +71,19 @@ const HomePage = () => {
       <header className="p-4 flex justify-between items-center bg-[#1C2526] shadow-md">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
-            <span className="text-xl">G</span>
+            <img
+              src={userPhoto || "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"}
+              alt="Profile"
+            />
           </div>
           <div>
             <p className="text-sm opacity-70">Welcome Back,</p>
-            <h1 className="text-lg font-semibold">Battle2Win</h1>
+            <h1 className="text-lg font-semibold">{displayName}</h1>
           </div>
         </div>
         <div className="flex items-center space-x-2 bg-[rgba(44,54,57,0.8)] px-3 py-1 rounded-full">
           <span className="text-yellow-400">💰</span>
-          <span className="text-sm font-medium">2.50</span>
+          <span className="text-sm font-medium">{balance.toFixed(2)}</span>
         </div>
       </header>
 

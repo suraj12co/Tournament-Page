@@ -23,7 +23,7 @@ const Profile = () => {
                 .eq("id", data.session.user.id)
                 .single();
 
-            if (userError) return navigate("/signin", { replace: true });
+            if (userError) return navigate("/login", { replace: true });
             setLoading(false);
             setUser(userData);
             setDisplayName(userData.name || '');

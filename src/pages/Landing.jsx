@@ -11,7 +11,7 @@ const Landing = () => {
       <div className="relative z-10 text-center px-4">
         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight animate-fade-in-down">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00C4B4] to-[#34C759]">
-            🔥 E-Sports Tournament Hub 🔥
+            🔥 E-Sports Tournament Organisation 🔥
           </span>
         </h1>
         <p className="text-lg md:text-2xl mb-10 max-w-2xl mx-auto opacity-90 animate-fade-in-up">
