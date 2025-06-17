@@ -38,7 +38,6 @@ const Profile = () => {
         if (user.profile_picture) {
             const oldFilePath = user.profile_picture.split("/").slice(-2).join("/");
             await supabase.storage.from("profile-pictures").remove([oldFilePath]);
-            console.log("Old profile picture removed:", oldFilePath);
         }
         await supabase.storage.from("profile-pictures").upload(filePath, file, { cacheControl: "3600", upsert: true });
         const { data: publicUrlData } = supabase.storage.from("profile-pictures").getPublicUrl(filePath);

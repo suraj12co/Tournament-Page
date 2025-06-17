@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -30,6 +31,7 @@ const Login = () => {
     } catch (error) {
       setError(error.message || 'An error occurred during login.');
     } finally {
+      toast.error("Login failed. Please check your credentials.");
       setLoading(false);
     }
   };

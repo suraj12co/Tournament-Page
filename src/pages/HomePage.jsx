@@ -29,14 +29,11 @@ const HomePage = () => {
     const { data, error } = await supabase.auth.getSession();
 
     if (error || !data?.session?.user?.id) {
-      console.log("No valid user session found.");
       navigate('/login');
       return;
     }
 
     const userId = data.session.user.id;
-    console.log("Session user ID:", userId);
-
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("*")
@@ -44,12 +41,10 @@ const HomePage = () => {
       .single();
 
     if (userError || !userData) {
-      console.log("userError", userError);
       navigate("/login", { replace: true });
       return;
     }
 
-    console.log("User Data:", userData);
 
     setDisplayName(userData.name || '');
     setUserPhoto(

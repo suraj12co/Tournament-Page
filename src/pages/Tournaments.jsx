@@ -71,9 +71,9 @@ const Tournaments = () => {
             });
 
         if (error) {
-            console.error('Error joining tournament:', error);
             alert('Failed to join tournament. Please try again.');
         } else {
+            
             alert('Successfully joined the tournament!');
             setIsRegistered(true);
         }
