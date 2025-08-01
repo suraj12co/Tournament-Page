@@ -31,7 +31,7 @@ const Landing = () => {
         </div>
         <p className="mt-8 text-sm md:text-base opacity-70">
           Admin?{' '}
-          <Link to="/login" className="text-[#00C4B4] hover:text-[#34C759] hover:underline transition-colors">
+          <Link to="/admin-login" className="text-[#00C4B4] hover:text-[#34C759] hover:underline transition-colors">
             Login here
           </Link>{' '}
           and start your journey!

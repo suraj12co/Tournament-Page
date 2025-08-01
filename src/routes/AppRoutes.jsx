@@ -6,10 +6,13 @@ import Landing from '../pages/Landing';
 import ResetPassword from '../pages/ResetPassword';
 import TournamentRegister from '../components/TournamentRegister';
 import HomePage from '../pages/HomePage';
-import AdminLogin from '../pages/AdminLogin';
+import AdminLogin from '../pages/admin page/AdminLogin';
 import Profile from '../pages/Profile';
 import Tournaments from '../pages/Tournaments';
 import Test from '../components/Test';
+import AddTournaments from '../pages/admin page/AddTournaments';
+import AdminDashboard from '../pages/admin page/AdminDashboard';
+import AdminProfile from '../pages/admin page/AdminProfile';
 const AppRoutes = () => {
   return (
     <Routes>
@@ -24,6 +27,11 @@ const AppRoutes = () => {
       <Route path="*" element={<Landing />} />
       <Route path="/tournaments" element={<Tournaments />} />
       <Route path="/test" element={<Test />} />
+      <Route path="/add-tournaments" element={<AddTournaments />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/admin-profile" element={<AdminProfile />} />
+      {/* Add more routes as needed */}
+      <Route path="*" element={<Landing />} />
     </Routes>
   )
 }

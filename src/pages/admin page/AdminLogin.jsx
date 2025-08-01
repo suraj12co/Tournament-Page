@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -14,17 +14,8 @@ const AdminLogin = () => {
       setError('Please fill in all fields.');
       return;
     }
-
     setLoading(true);
     setError(null);
-
-    // Hardcoded admin password check (for demo purposes only; not secure for production)
-    const ADMIN_PASSWORD = 'sandybhai';
-    if (password !== ADMIN_PASSWORD) {
-      setError('Incorrect admin password.');
-      setLoading(false);
-      return;
-    }
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -37,13 +28,12 @@ const AdminLogin = () => {
           .select('role')
           .eq('id', data.user.id)
           .single();
-
         if (userError) throw userError;
-
         if (userData?.role === 'admin') {
           navigate('/admin-dashboard');
         } else {
           setError('You do not have admin privileges.');
+          console.log('User does not have admin privileges:', userData);
           await supabase.auth.signOut();
         }
       } else {
